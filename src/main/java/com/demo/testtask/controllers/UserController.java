@@ -1,6 +1,8 @@
 package com.demo.testtask.controllers;
 
 import com.demo.testtask.dto.UserResponseDTO;
+import com.demo.testtask.exceptions.BadArgumentException;
+import com.demo.testtask.exceptions.NotFoundException;
 import com.demo.testtask.services.UserService;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
@@ -26,10 +28,10 @@ public class UserController {
     public ResponseEntity<UserResponseDTO> findUserById(@NotNull @RequestParam Long id) {
         try {
             return new ResponseEntity<>(userService.findUserById(id), HttpStatus.OK);
-        } catch (IllegalArgumentException iae) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } catch (NullPointerException npe) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (BadArgumentException bae) {
+            throw new BadArgumentException();
+        } catch (NotFoundException nfe) {
+            throw new NotFoundException();
         }
     }
 

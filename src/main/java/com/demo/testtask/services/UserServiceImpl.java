@@ -2,6 +2,8 @@ package com.demo.testtask.services;
 
 import com.demo.testtask.domain.User;
 import com.demo.testtask.dto.UserResponseDTO;
+import com.demo.testtask.exceptions.BadArgumentException;
+import com.demo.testtask.exceptions.NotFoundException;
 import com.demo.testtask.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -22,13 +24,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDTO findUserById(Long id) {
         if (id < 0) {
-            throw new IllegalArgumentException();
+            throw new BadArgumentException();
         }
 
         Optional<User> user = userRepository.findById(id);
 
         if (user.isEmpty()) {
-            throw new NullPointerException();
+            throw new NotFoundException();
         }
 
         User foundUser = user.get();
